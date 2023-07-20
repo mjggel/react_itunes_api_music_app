@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test:e2e": "cypress open",
+    "test": "cypress open",
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },

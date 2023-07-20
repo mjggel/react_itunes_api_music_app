@@ -3,14 +3,13 @@ describe('testing Itunes Music app', () => {
     cy.visit('/login');
     const user = {
       name: 'John Doe',
-      username: '@john.doe',
+      username: '@johndoe',
       email: 'john@doe.com',
       password: '123456',
-      rememberMe: false,
     };
 
     cy.window().then((win) => {
-      win.localStorage.setItem('users', JSON.stringify([user]));
+      win.localStorage.setItem('user', JSON.stringify(user));
     });
   });
 
@@ -21,7 +20,6 @@ describe('testing Itunes Music app', () => {
     cy.get('input[type="password"]').should('be.visible');
     cy.contains('Log in').should('be.visible');
     cy.contains('Register').should('be.visible');
-    cy.contains('Remember me').should('be.visible');
   });
 
   it('should display error message when one or all fields are empty', () => {
@@ -29,14 +27,16 @@ describe('testing Itunes Music app', () => {
     cy.contains('Both password and username are required.').should(
       'be.visible'
     );
+  });
 
-    cy.get('input[type="text"]').type('@john.doe');
+  it('should display error message when trying to login with invalid fields', () => {
+    cy.get('input[type="text"]').type('johndoe');
     cy.contains('Log in').click();
     cy.contains('Both password and username are required.').should(
       'be.visible'
     );
 
-    cy.get('input[type="text"]').clear().type('{enter}');
+    cy.get('input[type="text"]').type('{enter}');
     cy.contains('Log in').click();
     cy.contains('Both password and username are required.').should(
       'be.visible'
@@ -56,14 +56,14 @@ describe('testing Itunes Music app', () => {
     cy.contains('Log in').click();
     cy.contains('Username or password are incorrect.').should('be.visible');
 
-    cy.get('input[type="text"]').clear().type('@john.doe');
-    cy.get('input[type="password"]').clear().type('123');
+    cy.get('input[type="text"]').type('@johndoe');
+    cy.get('input[type="password"]').type('123');
     cy.contains('Log in').click();
     cy.contains('Username or password are incorrect.').should('be.visible');
   });
 
   it('should redirect to /home when log in is successful', () => {
-    cy.get('input[type="text"]').type('@john.doe');
+    cy.get('input[type="text"]').type('@johndoe');
     cy.get('input[type="password"]').type('123456');
     cy.contains('Log in').click();
     cy.url().should('include', '/home');
@@ -82,23 +82,5 @@ describe('testing Itunes Music app', () => {
     cy.visit('/login');
 
     cy.url().should('include', '/register');
-  });
-
-  it('should redirect to /home without the need to click the Log in button if there is a Remember me user', () => {
-    const user = {
-      name: 'John Doe',
-      username: '@john.doe',
-      email: 'john@doe.com',
-      password: '123456',
-      rememberMe: true,
-    };
-
-    cy.window().then((win) => {
-      win.localStorage.setItem('users', JSON.stringify([user]));
-    });
-
-    cy.visit('/login');
-
-    cy.url().should('include', '/home');
   });
 });

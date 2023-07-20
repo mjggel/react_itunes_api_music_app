@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Image from 'react-bootstrap/Image';
+import CloseButton from 'react-bootstrap/CloseButton';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -7,8 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { validate } from 'email-validator';
 import { RiEyeFill, RiEyeCloseFill } from 'react-icons/ri';
 import { SiMusicbrainz } from 'react-icons/si';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 export default function RegisterPage() {
+  const [userpicture, setUserpicture] = useState('');
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -23,6 +28,7 @@ export default function RegisterPage() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -33,15 +39,50 @@ export default function RegisterPage() {
       setIsPasswordValid(false);
       setIsEmailValid(false);
       setIsNameValid(false);
-      setErrorMessage('All fields are required.');
+      setErrorMessage('All fields are required. \u{1F440}');
+      setName('');
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      return;
+    }
+
+    if (!isNameValid || !isEmailValid || !isUsernameValid || !isPasswordValid) {
+      setErrorMessage('Invalid fields. \u{1F440}');
+      setName('');
+      setUsername('');
+      setEmail('');
+      setPassword('');
       return;
     }
 
     localStorage.setItem(
-      'users',
-      JSON.stringify([{ name, email, username, password }])
+      'user',
+      JSON.stringify({
+        userpicture,
+        name,
+        email,
+        username,
+        password,
+      })
     );
+    setName('');
+    setUsername('');
+    setEmail('');
+    setPassword('');
     navigate('/home');
+  };
+
+  const handleUserpictureInput = ({ target }) => {
+    const file = target.files[0];
+    const reader = new FileReader();
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+    reader.onloadend = () => {
+      setUserpicture(reader.result);
+    };
   };
 
   const handleNameInput = ({ target }) => {
@@ -51,22 +92,28 @@ export default function RegisterPage() {
 
     if (!target.value) {
       setNameErrorMessage('Name is required.');
-    } else if (!isValid) {
+      return;
+    }
+    if (!isValid) {
       setNameErrorMessage('Invalid name.');
+      return;
     }
   };
 
   const handleUsernameInput = ({ target }) => {
-    const usernameRegex = /^[a-zA-Z0-9_]{1,15}$/;
+    const usernameRegex = /^@[a-zA-Z0-9_.]{1,15}$/;
     const isValid = usernameRegex.test(target.value);
-    const usernameValue = `@${target.value}`;
+    const usernameValue = target.value;
     setUsername(usernameValue);
     setIsUsernameValid(isValid);
 
     if (!target.value) {
       setUsernameErrorMessage('Username is required.');
-    } else if (!isValid) {
+      return;
+    }
+    if (!isValid) {
       setUsernameErrorMessage('Invalid username.');
+      return;
     }
   };
 
@@ -77,8 +124,11 @@ export default function RegisterPage() {
 
     if (!target.value) {
       setEmailErrorMessage('Email is required.');
-    } else if (!isValid) {
+      return;
+    }
+    if (!isValid) {
       setEmailErrorMessage('Invalid email.');
+      return;
     }
   };
 
@@ -88,9 +138,12 @@ export default function RegisterPage() {
     setIsPasswordValid(isValid);
 
     if (!target.value) {
-      setPasswordErrorMessage('Both password is required.');
-    } else if (!isValid) {
-      setPasswordErrorMessage('Invalid password.');
+      setPasswordErrorMessage('Password is required.');
+      return;
+    }
+    if (!isValid) {
+      setPasswordErrorMessage('Password must be at least 6 characters');
+      return;
     }
   };
 
@@ -111,6 +164,60 @@ export default function RegisterPage() {
       </Modal.Header>
 
       <Modal.Body>
+        <InputGroup className='mb-3'>
+          <Form.Control
+            type='file'
+            ref={fileInputRef}
+            accept='image/*'
+            style={{ display: 'none' }}
+            onChange={handleUserpictureInput}
+          />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+              height: '150px',
+            }}
+          >
+            {!userpicture ? (
+              <FaRegUserCircle
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  fontSize: '130px',
+                  cursor: 'pointer',
+                }}
+                onClick={() => fileInputRef.current.click()}
+              />
+            ) : (
+              <Image
+                src={userpicture}
+                roundedCircle
+                style={{
+                  width: '150px',
+                  height: '150px',
+                  objectFit: 'cover',
+                }}
+                onClick={() => fileInputRef.current.click()}
+              />
+            )}
+            {userpicture && <CloseButton onClick={() => setUserpicture('')} />}
+          </div>
+          <span
+            className='text-muted'
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            {userpicture ? 'choose another picture' : 'choose a picture'}
+          </span>
+        </InputGroup>
+
         <FloatingLabel
           controlId='floatingNameInput'
           label='name'
@@ -118,6 +225,7 @@ export default function RegisterPage() {
         >
           <Form.Control
             type='text'
+            value={name}
             placeholder='John Doe'
             isInvalid={!isNameValid}
             onChange={handleNameInput}
@@ -140,6 +248,7 @@ export default function RegisterPage() {
         >
           <Form.Control
             type='text'
+            value={username}
             placeholder='@johndoe'
             isInvalid={!isUsernameValid}
             onChange={handleUsernameInput}
@@ -161,7 +270,8 @@ export default function RegisterPage() {
           className='mb-3'
         >
           <Form.Control
-            type='text'
+            type='email'
+            value={email}
             placeholder='email@example.com'
             isInvalid={!isEmailValid}
             onChange={handleEmailInput}
@@ -181,6 +291,7 @@ export default function RegisterPage() {
           <Form.Control
             type={showPassword ? 'text' : 'password'}
             placeholder='Password'
+            value={password}
             isInvalid={!isPasswordValid}
             onChange={handlePasswordInput}
             onBlur={() => {
@@ -210,10 +321,12 @@ export default function RegisterPage() {
             {passwordErrorMessage}
           </Form.Control.Feedback>
         </FloatingLabel>
-        {errorMessage.length > 0 && !isUsernameValid && !isPasswordValid ? (
-          <span className='text-danger'>
-            {errorMessage} {'\u{1F440}'}
-          </span>
+        {errorMessage.length > 0 ||
+        !isNameValid ||
+        !isEmailValid ||
+        !isUsernameValid ||
+        !isPasswordValid ? (
+          <span className='text-danger'>{errorMessage}</span>
         ) : null}
       </Modal.Body>
       <Modal.Footer>

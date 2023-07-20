@@ -15,9 +15,8 @@ export default function LoginPage() {
   const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const users = JSON.parse(localStorage.getItem('users'));
+  const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -32,11 +31,7 @@ export default function LoginPage() {
       return;
     }
 
-    const isUserValid = users.some(
-      (user) => user.username === username && user.password === password
-    );
-
-    if (!isUserValid) {
+    if (user.username !== username || user.password !== password) {
       setIsUsernameValid(false);
       setIsPasswordValid(false);
       setErrorMessage('Username or password are incorrect.');
@@ -45,24 +40,19 @@ export default function LoginPage() {
       return;
     }
 
-    if (rememberMe) {
-      const updatedUsers = users.map((user) =>
-        user.username === username ? { ...user, rememberMe: true } : user
-      );
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
-    }
-
     setUsername('');
     setPassword('');
     navigate('/home');
   };
 
   const handleUsernameInput = ({ target }) => {
-    const usernameRegex = /^[a-zA-Z0-9_]{1,15}$/;
+    const usernameRegex = /^@[a-zA-Z0-9_.]{1,15}$/;
     const isValid = usernameRegex.test(target.value);
-    setUsername(target.value);
+    console.log('valido1', isValid);
+    const usernameValue = target.value;
+    setUsername(usernameValue);
     setIsUsernameValid(isValid);
-
+    console.log('valido2', isValid);
     if (!isValid) {
       setUsernameErrorMessage('Invalid username.');
       return;
@@ -81,15 +71,10 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    if (!users) {
+    if (!user) {
       navigate('/register');
       return;
     }
-    users.forEach((user) => {
-      if (user.rememberMe) {
-        navigate('/home');
-      }
-    });
   }, []);
 
   return (
@@ -117,7 +102,6 @@ export default function LoginPage() {
         >
           <Form.Control
             type='text'
-            placeholder='@johndoe'
             value={username}
             isInvalid={!isUsernameValid}
             onChange={handleUsernameInput}
@@ -176,13 +160,6 @@ export default function LoginPage() {
       <Modal.Footer>
         <Button onClick={() => navigate('/register')}>Register</Button>
         <Button onClick={handleLogin}>Log in</Button>
-        <Form.Check
-          type='checkbox'
-          id='rememberMe'
-          label='Remember me'
-          checked={rememberMe}
-          onChange={(e) => setRememberMe(e.target.checked)}
-        />
       </Modal.Footer>
     </Modal>
   );
