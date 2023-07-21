@@ -235,6 +235,7 @@ export default function RegisterPage() {
                 setNameErrorMessage('');
               }
             }}
+            autoFocus={true}
           />
           <Form.Control.Feedback type='invalid'>
             {nameErrorMessage}

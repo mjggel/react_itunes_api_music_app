@@ -48,11 +48,9 @@ export default function LoginPage() {
   const handleUsernameInput = ({ target }) => {
     const usernameRegex = /^@[a-zA-Z0-9_.]{1,15}$/;
     const isValid = usernameRegex.test(target.value);
-    console.log('valido1', isValid);
     const usernameValue = target.value;
     setUsername(usernameValue);
     setIsUsernameValid(isValid);
-    console.log('valido2', isValid);
     if (!isValid) {
       setUsernameErrorMessage('Invalid username.');
       return;
