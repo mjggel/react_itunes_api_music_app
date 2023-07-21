@@ -3,12 +3,16 @@ import Navbar from 'react-bootstrap/Navbar';
 import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { SiMusicbrainz } from 'react-icons/si';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
+import { IoHome, IoHomeOutline } from 'react-icons/io5';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import Nav from 'react-bootstrap/Nav';
 
 export default function Header() {
   const user = JSON.parse(localStorage.getItem('user')) || {};
   const currentUser = user;
+  const location = useLocation();
   const navigate = useNavigate();
 
   return (
@@ -17,7 +21,7 @@ export default function Header() {
         <Container>
           <Navbar.Brand href='/home'>
             <h3 className='display-3'>
-              Itunes Music <SiMusicbrainz /> <br />
+              <SiMusicbrainz /> Itunes Music
             </h3>
           </Navbar.Brand>
           <Navbar.Toggle />
@@ -40,18 +44,23 @@ export default function Header() {
                     width: '80px',
                     height: '80px',
                     objectFit: 'cover',
-                    display: 'flex',
-                    marginBottom: '5px',
                   }}
                   onClick={() => navigate('/profile')}
                 />
               ) : (
                 <FaUserCircle
                   size={30}
-                  style={{ marginBottom: '5px' }}
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    objectFit: 'cover',
+                  }}
                   onClick={() => navigate('/profile')}
                 />
               )}
+              <Navbar.Text style={{ fontSize: '14px' }}>
+                {currentUser.name}
+              </Navbar.Text>
               <Navbar.Text style={{ fontSize: '14px' }}>
                 {currentUser.username}
               </Navbar.Text>
@@ -59,6 +68,28 @@ export default function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <Nav
+        justify
+        variant='tabs'
+        activeKey={location.pathname}
+        onSelect={(e) => navigate(e)}
+        fill
+      >
+        <Nav.Item>
+          <Nav.Link eventKey='/home'>
+            {location.pathname === '/home' ? <IoHome /> : <IoHomeOutline />}
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey='/favorites'>
+            {location.pathname === '/favorites' ? (
+              <AiFillHeart />
+            ) : (
+              <AiOutlineHeart />
+            )}
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
     </>
   );
 }

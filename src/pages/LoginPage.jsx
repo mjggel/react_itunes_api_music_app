@@ -85,7 +85,7 @@ export default function LoginPage() {
       <Modal.Header>
         <Modal.Title id='contained-modal-title-vcenter' className='text-center'>
           <h3 className='display-3'>
-            Itunes Music <SiMusicbrainz /> <br />
+            <SiMusicbrainz /> Itunes Music <br />
           </h3>
           <small className='text-muted'>Login</small>
         </Modal.Title>
@@ -137,9 +137,7 @@ export default function LoginPage() {
               top: '50%',
               right: '10px',
               transform: 'translateY(-50%)',
-              zIndex: '1',
               borderColor: 'transparent',
-              boxShadow: 'none',
             }}
           >
             {showPassword ? <RiEyeCloseFill /> : <RiEyeFill />}
