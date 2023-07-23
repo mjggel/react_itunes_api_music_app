@@ -13,6 +13,7 @@ import searchSongFunction from '../service/SearchSongFunction';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   const [tab, setTab] = useState('albums');
@@ -28,12 +29,9 @@ export default function HomePage() {
     e.preventDefault();
     setShowTabs(true);
     const albumsResult = await searchAlbumFunction(search);
-    console.log('albumsResult', albumsResult);
     const songsResult = await searchSongFunction(search);
-    console.log('songsResult', songsResult);
     setSearchResult({ albumsResult, songsResult });
   };
-  console.log('searchResult', searchResult);
   return (
     <div>
       <Container className='position-relative py-5 px-4'>
@@ -75,70 +73,79 @@ export default function HomePage() {
           eventKey='albums'
           title={tab === 'albums' ? <IoAlbums /> : <IoAlbumsOutline />}
         >
-          {showTabs ? (
-            searchResult.albumsResult &&
-            searchResult.albumsResult.length > 0 ? (
-              <Row md={5} className='g-5 px-3 py-5'>
-                {searchResult.albumsResult.map((album, i) => (
-                  <Col key={i}>
-                    <Card>
-                      <Card.Img
-                        variant='top'
-                        src={album.artworkUrl100}
-                        style={{ objectFit: 'cover' }}
-                      />
-                      <Card.Body>
-                        <Card.Title>{album.collectionName}</Card.Title>
-                        <Card.Text>{album.artistName}</Card.Text>
-                        <Card.Text>{album.primaryGenreName}</Card.Text>
-                        <Card.Text>{album.collectionType}</Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
+          <Container>
+            {showTabs ? (
+              searchResult.albumsResult &&
+              searchResult.albumsResult.length > 0 ? (
+                <Row xs={2} md={5} className='g-5 px-3 py-5'>
+                  {searchResult.albumsResult.map((album) => (
+                    <Col key={album.collectionId}>
+                      <Link to={`/album/${album.collectionId}`}>
+                        <Card
+                          className='shadow bg-body-tertiary rounded'
+                          style={{ height: '100%' }}
+                        >
+                          <Card.Img
+                            variant='top'
+                            src={album.artworkUrl100}
+                            style={{ objectFit: 'cover' }}
+                          />
+                          <Card.Body>
+                            <Card.Title>{album.collectionName}</Card.Title>
+                            <Card.Text>{album.artistName}</Card.Text>
+                            <Card.Text>{album.primaryGenreName}</Card.Text>
+                          </Card.Body>
+                        </Card>
+                      </Link>
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                <h2 className='h2'>No result Found</h2>
+              )
             ) : (
-              <h2 className='h2'>No result Found</h2>
-            )
-          ) : (
-            <h1 className='h1'>Your search result will appear here</h1>
-          )}
+              <h1 className='h1'>Your search result will appear here</h1>
+            )}
+          </Container>
         </Tab>
 
         <Tab
           eventKey='songs'
           title={tab === 'songs' ? <RiAlbumFill /> : <RiAlbumLine />}
         >
-          {showTabs ? (
-            searchResult.songsResult && searchResult.songsResult.length > 0 ? (
-              <Row md={3} className='g-5 px-3 py-5'>
-                {searchResult.songsResult.map((song, i) => (
-                  <Col key={i}>
-                    <Card>
-                      <Card.Body>
-                        <Card.Title>{song.trackName}</Card.Title>
-                        <Card.Text>{song.artistName}</Card.Text>
-                        <Card.Text>{song.primaryGenreName}</Card.Text>
-                        <Card.Text>{song.kind}</Card.Text>
-                        <Card.Text>{`From: ${song.collectionName} Album`}</Card.Text>
-                        <audio
-                          src={song.previewUrl}
-                          controls
-                          style={{
-                            width: '100%',
-                          }}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
+          <Container>
+            {showTabs ? (
+              searchResult.songsResult &&
+              searchResult.songsResult.length > 0 ? (
+                <Row md={3} className='g-4 px-3 py-5'>
+                  {searchResult.songsResult.map((song) => (
+                    <Col key={song.trackId}>
+                      <Card className='shadow bg-body-tertiary rounded'>
+                        <Card.Body>
+                          <Card.Title>{song.trackName}</Card.Title>
+                          <Card.Text>{song.artistName}</Card.Text>
+                          <Card.Text>{song.primaryGenreName}</Card.Text>
+                          <Card.Text>{song.kind}</Card.Text>
+                          <Card.Text>{`From: ${song.collectionName} Album`}</Card.Text>
+                          <audio
+                            src={song.previewUrl}
+                            controls
+                            style={{
+                              width: '100%',
+                            }}
+                          />
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              ) : (
+                <h2 className='h2'>No result Found</h2>
+              )
             ) : (
-              <h2 className='h2'>No result Found</h2>
-            )
-          ) : (
-            <h1 className='h1'>Your search result will appear here</h1>
-          )}
+              <h1 className='h1'>Your search result will appear here</h1>
+            )}
+          </Container>
         </Tab>
       </Tabs>
     </div>
