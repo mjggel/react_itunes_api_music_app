@@ -14,12 +14,14 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 export default function HomePage() {
   const [tab, setTab] = useState('albums');
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState({});
   const [showTabs, setShowTabs] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSearchInput = ({ target }) => {
     setSearch(target.value);
@@ -28,8 +30,10 @@ export default function HomePage() {
   const handleSearchButon = async (e) => {
     e.preventDefault();
     setShowTabs(true);
+    setLoading(true);
     const albumsResult = await searchAlbumFunction(search);
     const songsResult = await searchSongFunction(search);
+    setLoading(false);
     setSearchResult({ albumsResult, songsResult });
   };
   return (
@@ -43,11 +47,11 @@ export default function HomePage() {
             type='text'
             className='shadow bg-body-tertiary rounded'
             value={search}
-            placeholder='search...'
             onChange={handleSearchInput}
             autoFocus={true}
           />
           <Button
+            id='searchButton'
             variant='outline-secondary'
             style={{
               position: 'absolute',
@@ -74,6 +78,7 @@ export default function HomePage() {
           title={tab === 'albums' ? <IoAlbums /> : <IoAlbumsOutline />}
         >
           <Container>
+            {loading && <Loading />}
             {showTabs ? (
               searchResult.albumsResult &&
               searchResult.albumsResult.length > 0 ? (
@@ -101,7 +106,7 @@ export default function HomePage() {
                   ))}
                 </Row>
               ) : (
-                <h2 className='h2'>No result Found</h2>
+                <h2 className='h2'>Result not found</h2>
               )
             ) : (
               <h1 className='h1'>Your search result will appear here</h1>
@@ -114,6 +119,7 @@ export default function HomePage() {
           title={tab === 'songs' ? <RiAlbumFill /> : <RiAlbumLine />}
         >
           <Container>
+            {loading && <Loading />}
             {showTabs ? (
               searchResult.songsResult &&
               searchResult.songsResult.length > 0 ? (
@@ -140,7 +146,7 @@ export default function HomePage() {
                   ))}
                 </Row>
               ) : (
-                <h2 className='h2'>No result Found</h2>
+                <h2 className='h2'>Result not found</h2>
               )
             ) : (
               <h1 className='h1'>Your search result will appear here</h1>
