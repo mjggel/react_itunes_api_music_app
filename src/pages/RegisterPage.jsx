@@ -28,7 +28,7 @@ export default function RegisterPage() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef();
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -321,6 +321,7 @@ export default function RegisterPage() {
             {passwordErrorMessage}
           </Form.Control.Feedback>
         </FloatingLabel>
+
         {errorMessage.length > 0 ||
         !isNameValid ||
         !isEmailValid ||

@@ -10,20 +10,24 @@ import {
 } from '../service/GetAlbum&SongsFunction';
 import Button from 'react-bootstrap/Button';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import Loading from '../components/Loading';
 
 export default function AlbumPage() {
   const { id } = useParams();
   const [album, setAlbum] = useState([]);
   const [albumSongs, setAlbumSongs] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleButtonClick = (song) => {
     let updatedFavorites;
     if (favorites.some((e) => e.trackId === song.trackId)) {
-      updatedFavorites = favorites.filter((e) => e.trackId !== song.trackId);
+      updatedFavorites = user.favorites.filter(
+        (e) => e.trackId !== song.trackId
+      );
     } else {
-      updatedFavorites = [...favorites, song];
+      updatedFavorites = [...user.favorites, song];
     }
     setFavorites(updatedFavorites);
     user.favorites = updatedFavorites;
@@ -33,10 +37,12 @@ export default function AlbumPage() {
   useEffect(() => {
     getAlbumFunction(id).then((allSongs) => setAlbum(allSongs));
     getSongsFunction(id).then((allSongs) => setAlbumSongs(allSongs));
+    setLoading(false);
   }, []);
 
   return (
     <Container className='py-5'>
+      {loading && <Loading />}
       <Row>
         <Col>
           {album &&
@@ -85,7 +91,9 @@ export default function AlbumPage() {
                         backgroundColor: 'transparent',
                       }}
                     >
-                      {favorites.some((e) => e.trackId === song.trackId) ? (
+                      {user.favorites.some(
+                        (e) => e.trackId === song.trackId
+                      ) ? (
                         <AiFillHeart style={{ color: 'red' }} />
                       ) : (
                         <AiOutlineHeart />
