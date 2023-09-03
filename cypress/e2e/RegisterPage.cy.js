@@ -47,7 +47,7 @@ describe('Register Page', () => {
   });
 
   it('should allow user to select profile picture', () => {
-    const imagePath = 'image.jpg';
+    const imagePath = 'pictures/image.jpg';
 
     cy.fixture(imagePath, { encoding: 'base64' }).as('myFixtureImage');
     cy.get('input[type="file"]').selectFile('@myFixtureImage', { force: true });

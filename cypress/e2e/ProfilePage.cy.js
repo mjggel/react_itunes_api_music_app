@@ -47,7 +47,7 @@ describe('HomePage', () => {
   it('should allow user to select profile picture', () => {
     cy.get('#editProfileButton').click();
 
-    const imagePath = 'user.jpg';
+    const imagePath = 'pictures/user.jpg';
 
     cy.fixture(imagePath, { encoding: null }).as('myFixtureImage');
 

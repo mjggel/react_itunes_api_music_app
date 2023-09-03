@@ -91,9 +91,8 @@ export default function AlbumPage() {
                         backgroundColor: 'transparent',
                       }}
                     >
-                      {user.favorites.some(
-                        (e) => e.trackId === song.trackId
-                      ) ? (
+                      {user.favorites &&
+                      user.favorites.some((e) => e.trackId === song.trackId) ? (
                         <AiFillHeart style={{ color: 'red' }} />
                       ) : (
                         <AiOutlineHeart />
