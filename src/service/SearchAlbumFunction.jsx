@@ -1,11 +1,15 @@
 export default async function searchAlbumFunction(artist) {
-  const artistNameURL = encodeURI(artist).replaceAll('%20', '+');
+  try {
+    const artistNameURL = encodeURI(artist).replaceAll('%20', '+');
 
-  const url = `https://itunes.apple.com/search?entity=album&term=${artistNameURL}&attribute=allArtistTerm`;
+    const url = `https://itunes.apple.com/search?entity=album&term=${artistNameURL}&attribute=allArtistTerm`;
 
-  const APIResponse = await fetch(url);
+    const APIResponse = await fetch(url);
 
-  const { results } = await APIResponse.json();
+    const { results } = await APIResponse.json();
 
-  return results;
+    return results;
+  } catch (error) {
+    console.log(error);
+  }
 }

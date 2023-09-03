@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 import { AiFillHeart } from 'react-icons/ai';
 import Button from 'react-bootstrap/Button';
 
 export default function FavoritesPage() {
   const user = JSON.parse(localStorage.getItem('user'));
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(user.favorites);
+
   const handleDeleteButton = (song) => {
     let updatedFavorites = favorites.filter((e) => e.trackId !== song.trackId);
     localStorage.setItem(
@@ -15,11 +16,8 @@ export default function FavoritesPage() {
         favorites: updatedFavorites,
       })
     );
+    setFavorites(updatedFavorites);
   };
-
-  useEffect(() => {
-    setFavorites(user.favorites);
-  }, [user.favorites]);
 
   return (
     <Container className='py-5'>
