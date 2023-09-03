@@ -21,6 +21,10 @@ export default function AlbumPage() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleButtonClick = (song) => {
+    if (!Array.isArray(user.favorites)) {
+      user.favorites = [];
+    }
+
     let updatedFavorites;
     if (favorites.some((e) => e.trackId === song.trackId)) {
       updatedFavorites = user.favorites.filter(
@@ -85,6 +89,7 @@ export default function AlbumPage() {
                   <Col className='text-center'>
                     <Button
                       variant='outline-secondary'
+                      className='favorite-button'
                       onClick={() => handleButtonClick(song)}
                       style={{
                         borderColor: 'transparent',
@@ -92,6 +97,7 @@ export default function AlbumPage() {
                       }}
                     >
                       {user.favorites &&
+                      user.favorites.length > 0 &&
                       user.favorites.some((e) => e.trackId === song.trackId) ? (
                         <AiFillHeart style={{ color: 'red' }} />
                       ) : (
