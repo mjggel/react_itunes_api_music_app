@@ -17,6 +17,7 @@ Welcome to the React Itunes API Music APP! This project is a simple React applic
 - React: A JavaScript library for building user interfaces.
 - React Icons: A library for adding icons to your React application.
 - React Bootstrap: A library for styling React components using Bootstrap.
+- React Router: For managing navigation within the application.
 - Cypress: An end-to-end testing framework for web applications.
 - iTunes API: Used to fetch album and track data.
 
