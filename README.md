@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# React Itunes API Music APP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the React Itunes API Music APP! This project is a simple React application that allows you to browse and list albums by artists, along with their associated tracks. You can also favorite tracks, view your favorite tracks, and listen to track previews provided by the iTunes API.
 
-## Available Scripts
+**Please note that this app was created solely for educational purposes and is not intended for production use. It is designed as a learning exercise, and there are no plans for further updates or maintenance.**
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Browse and list albums by artists.
+- View a list of tracks for each album.
+- Favorite tracks to save them for later.
+- View your list of favorite tracks.
+- Listen to track previews provided by the iTunes API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React: A JavaScript library for building user interfaces.
+- React Icons: A library for adding icons to your React application.
+- React Bootstrap: A library for styling React components using Bootstrap.
+- Cypress: An end-to-end testing framework for web applications.
+- iTunes API: Used to fetch album and track data.
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To get started with this project, follow these steps:
 
-### `npm run build`
+1. Clone the repository to your local machine.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone git@github.com:mjggel/itunes_api_music_js.git
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Install the project dependencies.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+```
 
-### `npm run eject`
+3. Start the development server.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Open your web browser and navigate to `http://localhost:3000` to access the application.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Once the application is running, you can:
 
-## Learn More
+- Search for artists and browse their albums.
+- Click on an album to view its tracklist.
+- Favorite tracks by clicking the heart icon.
+- View your favorite tracks by clicking on the "Favorites" tab.
+- Listen to track previews by clicking on the play button next to a track.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Testing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project includes Cypress tests for some of its features. To run the tests, use the following command:
 
-### Code Splitting
+```bash
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Please note that not all tests have been completed, and this project is primarily intended for learning purposes.
 
-### Analyzing the Bundle Size
+## This app was created as a learning exercise and won't receive further updates.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Thank you for exploring the React Itunes API Music APP! Your feedback is welcome, but please keep in mind that this app is a study project and will not be actively maintained. Enjoy your music exploration!
