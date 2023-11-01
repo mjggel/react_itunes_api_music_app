@@ -10,6 +10,5 @@ export default async function searchAlbumFunction(artist) {
 
     return results;
   } catch (error) {
-    console.log(error);
   }
 }

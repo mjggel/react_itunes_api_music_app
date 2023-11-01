@@ -5,7 +5,6 @@ export async function getSongsFunction(id) {
     const { results } = await APIResponse.json();
     return results;
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -16,6 +15,5 @@ export async function getAlbumFunction(id) {
     const { results } = await APIResponse.json();
     return results;
   } catch (error) {
-    console.log(error);
   }
 }

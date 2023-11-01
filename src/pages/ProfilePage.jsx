@@ -92,9 +92,6 @@ export default function ProfilePage() {
     setUsername(usernameValue);
     setIsUsernameValid(isValid);
 
-    console.log(isValid);
-    console.log(usernameValue);
-
     if (!target.value) {
       setUsernameErrorMessage('Username is required.');
       return;
@@ -105,7 +102,6 @@ export default function ProfilePage() {
     }
   };
 
-  console.log(usernameErrorMessage);
   const handleEmailInput = ({ target }) => {
     const isValid = validate(target.value);
     setEmail(target.value);
